@@ -40,7 +40,7 @@ function promptConstraints() {
   const numTrue = Object.values(userConstraints).filter(
     (c) => typeof c == "boolean" && c
   );
-  if (!numTrue) return "At least one character type must be selected";
+  if (!numTrue.length) return "At least one character type must be selected";
   return userConstraints;
 }
 
@@ -60,6 +60,8 @@ function generatePassword(userConstraints) {
 
 function writePassword() {
   const userConstraints = promptConstraints();
+  if (typeof userConstraints == "string")
+    return alert(`Error: ${userConstraints}`);
   var password = generatePassword(userConstraints);
   var passwordText = document.querySelector("#password");
 
