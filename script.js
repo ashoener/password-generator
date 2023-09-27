@@ -7,7 +7,7 @@ const characters = {
   lowercase: "abcdefghijklmnopqrstuvwxyz",
   uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   numbers: "0123456789",
-  special: "~!@#$%^&*()_+{}[]\\|;:'\"<>,.?/",
+  special: "~`!@#$%^&*()_+{}[]\\|;:'\"<>,.?/+=",
 };
 
 // Write password to the #password input
@@ -44,9 +44,23 @@ function promptConstraints() {
   return userConstraints;
 }
 
+function generatePassword(userConstraints) {
+  let characterSet = "";
+  let finalPassword = "";
+  const characterTypes = Object.entries(userConstraints)
+    .filter(([_, value]) => typeof value == "boolean" && value)
+    .map(([name]) => name);
+  for (let type of characterTypes) characterSet += characters[type];
+  for (let i = 0; i < userConstraints.length; i++) {
+    finalPassword +=
+      characterSet[Math.floor(Math.random() * characterSet.length)];
+  }
+  return finalPassword;
+}
+
 function writePassword() {
-  console.log(promptConstraints());
-  var password = generatePassword();
+  const userConstraints = promptConstraints();
+  var password = generatePassword(userConstraints);
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
